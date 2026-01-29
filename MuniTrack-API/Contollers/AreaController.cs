@@ -3,11 +3,13 @@ using Application.Interfaces;
 using Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MuniTrack_API.Contollers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "AdminAndAbove")]
     public class AreaController : ControllerBase
     {
         private readonly IAreaService _areaService;

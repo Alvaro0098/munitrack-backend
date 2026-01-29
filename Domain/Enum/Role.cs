@@ -8,9 +8,9 @@ namespace Domain.Enum
 {
     public enum Role
     {
-        SysAdmin,
-        Admin,
         OperatorBasic,
-        OperatorElite
+        Admin,
+        SysAdmin
+        
     }
 }

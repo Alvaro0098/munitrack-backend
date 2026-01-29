@@ -5,72 +5,84 @@ using Infrastructure;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-
+using Domain.Enum;
+using Npgsql; // Asegura la conexi√≥n con Postgres
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// --- SERVICIOS ---
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+// Configuraci√≥n de Swagger (Requisito 50)
 builder.Services.AddSwaggerGen(setupAction =>
 {
-    setupAction.AddSecurityDefinition("AgendaApiBearerAuth", new OpenApiSecurityScheme() //Esto va a permitir usar swagger con el token.
+    setupAction.AddSecurityDefinition("AgendaApiBearerAuth", new OpenApiSecurityScheme()
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        Description = "Ac· pegar el token generado al loguearse."
+        Description = "Ac√° pegar el token generado al loguearse."
     });
-
     setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "AgendaApiBearerAuth" } //Tiene que coincidir con el id seteado arriba en la definiciÛn
-                }, new List<string>() }
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "AgendaApiBearerAuth" }
+            }, new List<string>() }
     });
 });
 
+// --- BASE DE DATOS POSTGRESQL ---
+// Abstracci√≥n mediante Entity Framework (Requisito 46)
+builder.Services.AddDbContext<MuniDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("MuniAPIDBConnectionString")));
 
-
-builder.Services.AddDbContext<MuniDbContext>(dbContextOptions => dbContextOptions.UseSqlite(
-builder.Configuration["ConnectionStrings:MuniAPIDBConnectionString"]));
-builder.Services.AddAuthentication("Bearer") //"Bearer" es el tipo de auntenticaciÛn que tenemos que elegir despuÈs en PostMan para pasarle el token
-   .AddJwtBearer(options => //Ac· definimos la configuraciÛn de la autenticaciÛn. le decimos quÈ cosas queremos comprobar. La fecha de expiraciÛn se valida por defecto.
+// --- AUTENTICACI√ìN JWT ---
+builder.Services.AddAuthentication("Bearer")
+   .AddJwtBearer(options =>
    {
-       options.TokenValidationParameters = new()
+       options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
        {
            ValidateIssuer = true,
            ValidateAudience = true,
            ValidateIssuerSigningKey = true,
            ValidIssuer = builder.Configuration["Authentication:Issuer"],
            ValidAudience = builder.Configuration["Authentication:Audience"],
-           IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"]))
+           IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(builder.Configuration["Authentication:SecretForKey"] ?? "ClaveSuperSecretaDeRespaldo32Chars")),
+           RoleClaimType = "role" 
        };
-   }
-);
-#region
+   });
 
+#region Inyecci√≥n de Dependencias
 builder.Services.AddScoped<IOperatorService, OperatorService>();
 builder.Services.AddScoped<ICitizenService, CitizenService>();
-
 builder.Services.AddScoped<IOperatorRepository, OperatorRepository>();
-builder.Services.AddScoped<ICitizenRepository, CitizenRepository>();
 builder.Services.AddScoped<ICitizenRepository, CitizenRepository>();
 builder.Services.AddScoped<IIncidenceService, IncidenceService>();
 builder.Services.AddScoped<IIncidenceRepository, IncidenceRepository>();
 builder.Services.AddScoped<IAreaService, AreaService>();
 builder.Services.AddScoped<IAreaRepository, AreaRepository>();
-
 #endregion
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MuniTrackPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
+// --- ROLES (Requisito 24) ---
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("OnlySysAdmin", policy => policy.RequireRole(Role.SysAdmin.ToString()));
+    options.AddPolicy("AdminAndAbove", policy => policy.RequireRole(Role.SysAdmin.ToString(), Role.Admin.ToString()));
+    options.AddPolicy("AnyRole", policy => policy.RequireRole(Role.SysAdmin.ToString(), Role.Admin.ToString(), Role.OperatorBasic.ToString()));
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -78,11 +90,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("MuniTrackPolicy");
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

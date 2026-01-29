@@ -9,6 +9,7 @@ namespace MuniTrack_API.Contollers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [Authorize(Policy = "OnlySysAdmin")]
     public class OperatorController : ControllerBase
     {
         private readonly IOperatorService _operatorService;
