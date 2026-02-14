@@ -27,7 +27,8 @@ namespace Application.Services
                 IncidenceType = Dto.IncidenceType,
                 Description = Dto.Description,
                 State = Dto.State,
-                Area = Dto.Area
+                AreaId = Dto.AreaId,
+                OperatorId = Dto.OperatorId
             };
             _incidenceRepository.AddIncidence(newIncidence);
         }

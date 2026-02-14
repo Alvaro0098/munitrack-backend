@@ -20,9 +20,13 @@ namespace Domain.Entities
         
         public IncidenceState State { get; set; } = IncidenceState.Started;
         
+        public int OperatorId { get; set; }
+
         public int AreaId { get; set; }
-        public Area Area { get; set; }
-        
+
         public int Deleted { get; set; } = 0;
+        
+        public virtual Area? Area { get; set; } 
+        public virtual Operator? Operator { get; set; }
     }
 }
