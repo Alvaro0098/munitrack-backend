@@ -157,6 +157,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
 app.UseCors("MuniTrackPolicy");
 
 app.UseAuthentication(); // Primero quién sos
