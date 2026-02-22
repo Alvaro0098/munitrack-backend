@@ -24,10 +24,10 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Restore dependencies
-        run: dotnet restore ../../MuniTrack-API/MuniTrack-API.sln
+        run: dotnet restore MuniTrack-API/MuniTrack-API.sln
 
       - name: Build application
-        run: dotnet build ../../MuniTrack-API/MuniTrack-API.sln --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+        run: dotnet build MuniTrack-API/MuniTrack-API.sln --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
 
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
