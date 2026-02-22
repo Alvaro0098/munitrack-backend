@@ -71,7 +71,7 @@ jobs:
         run: dotnet tool install --global dotnet-ef --version 8.*
 
       - name: Update database with EF Core migrations
-        run: dotnet ef database update --project MUNITRACK-BACKEND/Infrastructure/Infrastructure.csproj --startup-project MUNITRACK-BACKEND/Infrastructure/Infrastructure.csproj
+        run: dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project MuniTrack-API/00-MuniTrackAPI.csproj
 
 
       - name: Deploy to Azure Web App
