@@ -19,7 +19,7 @@ namespace Application.Services
             _incidenceRepository = incidenceRepository;
         }
 
-        public void CreateIncidence(CreateIncidenceDTO Dto)
+        public void CreateIncidence(CreateIncidenceDTO Dto, int operatorId)
         {
             Incidence newIncidence = new Incidence()
             {
@@ -28,7 +28,7 @@ namespace Application.Services
                 Description = Dto.Description,
                 State = Dto.State,
                 AreaId = Dto.AreaId,
-                OperatorId = Dto.OperatorId
+                OperatorId = operatorId
             };
             _incidenceRepository.AddIncidence(newIncidence);
         }

@@ -48,9 +48,8 @@ namespace Application.Services
             var operatorDelete = _operatorRepository.GetOperatorByDni(dni);
             if (operatorDelete is null)
                 return false;
-
-            operatorDelete.Deleted = 1;
-            _operatorRepository.UpdateOperator(operatorDelete);
+                
+            _operatorRepository.DeleteOperator(operatorDelete);
             return true;
         }
 
@@ -67,7 +66,7 @@ namespace Application.Services
 
             operatorEntity.Name = Dto.Name;
             operatorEntity.LastName = Dto.LastName;
-            operatorEntity.NLegajo = Dto.NLegajo;
+            
             operatorEntity.Password = Dto.Password;
             operatorEntity.Phone = Dto.Phone;
             operatorEntity.Email = Dto.Email;

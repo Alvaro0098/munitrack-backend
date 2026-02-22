@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Enum
 {
-    public enum IncidenceType
+      public enum IncidenceState
     {
-        Sheet,
-        FoodBag,
-        Complaint,
-        Driverslicense,
-        Procedure,
-        Others
-
+        Started,
+        InProgress,
+        Done
     }
 }

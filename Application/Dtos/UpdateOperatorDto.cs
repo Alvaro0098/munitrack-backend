@@ -15,8 +15,7 @@ namespace Application.Dtos
         public string Name { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
-        public int NLegajo { get; set; }
+
         [Required]
         [MinLength(8)]
         public string Password { get; set; }

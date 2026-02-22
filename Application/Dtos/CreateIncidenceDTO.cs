@@ -18,7 +18,6 @@ namespace Application.Dtos
         public IncidenceType IncidenceType { get; set; }
         public string Description { get; set; }
         public IncidenceState State { get; set; } = IncidenceState.Started;
-        public int OperatorId { get; set; }
         [Required]
         public int AreaId { get; set; }
 

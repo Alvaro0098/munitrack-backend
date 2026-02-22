@@ -9,7 +9,7 @@ namespace MuniTrack_API.Contollers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Policy = "AnyRole")]
     public class IncidenceController : ControllerBase
     {
         private readonly IIncidenceService _incidenceService;
@@ -22,9 +22,18 @@ namespace MuniTrack_API.Contollers
         [HttpPost]
         public IActionResult CreateIncidence([FromBody] CreateIncidenceDTO Dto)
         {
+            
+            var nLegajoClaim = User.FindFirst("sub")?.Value 
+                      ?? User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                      
+            if (string.IsNullOrEmpty(nLegajoClaim) || !int.TryParse(nLegajoClaim, out int nLegajo))
+            {
+            return Unauthorized("No se encontró el Legajo del operador en el token.");
+            }
+
             try
             {
-                _incidenceService.CreateIncidence(Dto);
+                _incidenceService.CreateIncidence(Dto,nLegajo);
                 return Ok(Dto);
             }
             catch (Exception ex)

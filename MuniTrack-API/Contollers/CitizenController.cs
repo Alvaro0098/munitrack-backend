@@ -11,7 +11,7 @@ namespace MuniTrack_API.Contollers
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Policy = "AnyRole")]
     public class CitizenController : Controller
     {
 

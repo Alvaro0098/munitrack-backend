@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
@@ -23,7 +24,11 @@ namespace Infrastructure.Repository
 
         public List<Incidence> GetAllIncidences()
         {
-            return _muniDbContext.Incidences.ToList();
+            return _muniDbContext.Incidences
+            .Include(i => i.Area)
+            .Include(i => i.Operator)
+            .Where(i => i.Deleted == 0) 
+            .ToList();
         }
 
         public Incidence? GetIncidenceById(int id)

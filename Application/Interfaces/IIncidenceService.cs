@@ -10,7 +10,7 @@ namespace Application.Interfaces
 {
     public interface IIncidenceService
     {
-        void CreateIncidence(CreateIncidenceDTO Dto);
+        void CreateIncidence(CreateIncidenceDTO Dto, int operatorId);
         List<Incidence> GetIncidences();
         Incidence UpdateIncidence(int id, UpdateIncidenceDTO Dto);
         bool DeleteIncidence(int id);
