@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  BUILD_CONFIGURATION: 'Release'
+
 jobs:
   build:
     runs-on: windows-latest
