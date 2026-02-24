@@ -21,7 +21,7 @@ namespace Application.Services
 
         public List<Operator> GetOperators()
         {
-            return _operatorRepository.GetOperators();
+            return _operatorRepository.Get();
         }
         public void CreateOperator(CreateOperatorDto Dto)
         {

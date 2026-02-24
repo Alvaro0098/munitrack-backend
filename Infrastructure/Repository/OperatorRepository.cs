@@ -24,10 +24,10 @@ namespace Infrastructure.Repository
             _muniDbContext.SaveChanges();
         }
 
-        public List<Operator> GetOperators()
-        {
-            return _muniDbContext.Operators.ToList();
-        }
+        // public List<Operator> GetOperators()
+        // {
+        //     return _muniDbContext.Operators.ToList();
+        // }
 
         public Operator? GetOperatorByDni(int dni)
         {
