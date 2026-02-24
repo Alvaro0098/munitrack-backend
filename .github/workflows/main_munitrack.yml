@@ -9,9 +9,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  BUILD_CONFIGURATION: 'Release'
-
 jobs:
   build:
     runs-on: windows-latest
@@ -26,14 +23,11 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Restore dependencies
-        run: dotnet restore MuniTrack-API.sln
-
-      - name: Build application
-        run: dotnet build MuniTrack-API.sln --configuration ${{ env.BUILD_CONFIGURATION }} --no-restore
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish MuniTrack-API.sln -c ${{ env.BUILD_CONFIGURATION }} -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -49,14 +43,6 @@ jobs:
       contents: read #This is required for actions/checkout
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.x'
-
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
@@ -65,15 +51,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F000757AD3154D7B8FB6278F06D16841 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B3A8FE2923884866B9B36E332B91AA3F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_EF491025851F4131AF753A325698C9DF }}
-
-      # - name: Install dotnet-ef tool
-      #   run: dotnet tool install --global dotnet-ef --version 8.*
-
-      # - name: Update database with EF Core migrations
-      #   run: dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project MuniTrack-API/00-MuniTrackAPI.csproj --connection "Host=munitrackdb.postgres.database.azure.com;Database=postgres;Username=dbadmin_munitrack;Password=${{ secrets.DB_PASSWORD }};SSL Mode=Require;"
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2C34B34B98D74062965E3AAAF3B6AA9F }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_86BDAC573A64480598EF35FD3CBE0049 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_129E48CF8C9347CFB2DBF896280EE379 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
