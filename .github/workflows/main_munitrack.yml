@@ -69,11 +69,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B3A8FE2923884866B9B36E332B91AA3F }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_EF491025851F4131AF753A325698C9DF }}
 
-      - name: Install dotnet-ef tool
-        run: dotnet tool install --global dotnet-ef --version 8.*
+      # - name: Install dotnet-ef tool
+      #   run: dotnet tool install --global dotnet-ef --version 8.*
 
-      - name: Update database with EF Core migrations
-        run: dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project MuniTrack-API/00-MuniTrackAPI.csproj --connection "Host=munitrackdb.postgres.database.azure.com;Database=postgres;Username=dbadmin_munitrack;Password=${{ secrets.DB_PASSWORD }};SSL Mode=Require;"
+      # - name: Update database with EF Core migrations
+      #   run: dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project MuniTrack-API/00-MuniTrackAPI.csproj --connection "Host=munitrackdb.postgres.database.azure.com;Database=postgres;Username=dbadmin_munitrack;Password=${{ secrets.DB_PASSWORD }};SSL Mode=Require;"
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
