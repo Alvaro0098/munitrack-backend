@@ -10,7 +10,6 @@ namespace Domain.Interfaces
     public interface IOperatorRepository: IBaseRepository<Operator>
     {
         void AddOperator(Operator Operator);
-        List<Operator> GetOperators();
         Operator? GetOperatorByDni(int NLegajo);
         Operator UpdateOperator(Operator Operator);
         void DeleteOperator(Operator Operator);
