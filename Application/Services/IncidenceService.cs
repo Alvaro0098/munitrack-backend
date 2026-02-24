@@ -35,7 +35,7 @@ namespace Application.Services
 
         public List<Incidence> GetIncidences()
         {
-            return _incidenceRepository.Get();
+            return _incidenceRepository.GetAllIncidences();
         }
 
         public Incidence UpdateIncidence(int id, UpdateIncidenceDTO Dto)
