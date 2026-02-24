@@ -9,7 +9,7 @@ namespace MuniTrack_API.Contollers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "AdminAndAbove")]
+    [Authorize]
     public class AreaController : ControllerBase
     {
         private readonly IAreaService _areaService;
@@ -33,6 +33,7 @@ namespace MuniTrack_API.Contollers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AnyRole")]
         public IActionResult GetAllAreas()
         {
             var areas = _areaService.GetAreas();

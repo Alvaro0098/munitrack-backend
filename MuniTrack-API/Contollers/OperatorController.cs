@@ -8,7 +8,7 @@ namespace MuniTrack_API.Contollers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "OnlySysAdmin")]
+    [Authorize]
     public class OperatorController : ControllerBase
     {
         private readonly IOperatorService _operatorService;
@@ -33,6 +33,7 @@ namespace MuniTrack_API.Contollers
         }
 
         [HttpGet]
+        [Authorize(Policy = "AnyRole")]
         public IActionResult GetAllOperator()
         {
             var operators = _operatorService.GetOperators();
@@ -49,6 +50,7 @@ namespace MuniTrack_API.Contollers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "OnlySysAdmin")]
         [Route("{dniToDelete}")]
         public IActionResult DeleteOperator(int dniToDelete)
         {
@@ -60,6 +62,7 @@ namespace MuniTrack_API.Contollers
         }
 
         [HttpPut("{dni}")]
+        [Authorize(Policy = "OnlySysAdmin")]
         public IActionResult UpdateOperator(int dni, [FromBody] UpdateOperatorDto dto)
         {
             try
