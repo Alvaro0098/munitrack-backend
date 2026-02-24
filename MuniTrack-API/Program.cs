@@ -53,9 +53,8 @@ builder.Services.AddSwaggerGen(setupAction =>
     });
 });
 
-// --- 2. BASE DE DATOS (ESTO ES LO QUE FALTABA Y HACÍA EXPLOTAR LA APP) ---
 builder.Services.AddDbContext<MuniDbContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("MuniAPIDBConnectionString")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // --- 3. AUTENTICACIÓN JWT ---
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -150,11 +149,9 @@ builder.Services.AddHttpClient("weatherHttpClient", client =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
 
