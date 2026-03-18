@@ -38,6 +38,11 @@ namespace Application.Services
             return _incidenceRepository.GetAllIncidences();
         }
 
+        public List<Incidence> GetDeletedIncidences()
+        {
+            return _incidenceRepository.GetDeletedIncidences();
+        }
+
         public Incidence UpdateIncidence(int id, UpdateIncidenceDTO Dto)
         {
             var updatedIncidence = _incidenceRepository.GetIncidenceById(id);

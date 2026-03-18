@@ -11,6 +11,7 @@ namespace Domain.Interfaces
     {
         void AddIncidence(Incidence Incidence);
         List<Incidence> GetAllIncidences();
+        List<Incidence> GetDeletedIncidences();
         Incidence? GetIncidenceById(int id);
         Incidence UpdateIncidence(Incidence incidence);
         void DeleteIncidence(Incidence incidence);

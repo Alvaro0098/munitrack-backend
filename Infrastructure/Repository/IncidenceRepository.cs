@@ -31,6 +31,15 @@ namespace Infrastructure.Repository
             .ToList();
         }
 
+        public List<Incidence> GetDeletedIncidences()
+        {
+            return _muniDbContext.Incidences
+            .Include(i => i.Area)
+            .Include(i => i.Operator)
+            .Where(i => i.Deleted == 1)
+            .ToList();
+        }
+
         public Incidence? GetIncidenceById(int id)
         {
             return _muniDbContext.Incidences.FirstOrDefault(p => p.Id == id);

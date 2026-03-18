@@ -12,6 +12,7 @@ namespace Application.Interfaces
     {
         void CreateIncidence(CreateIncidenceDTO Dto, int operatorId);
         List<Incidence> GetIncidences();
+        List<Incidence> GetDeletedIncidences();
         Incidence UpdateIncidence(int id, UpdateIncidenceDTO Dto);
         bool DeleteIncidence(int id);
     }

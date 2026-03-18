@@ -49,6 +49,13 @@ namespace MuniTrack_API.Contollers
             return Ok(incidences);
         }
 
+        [HttpGet("deleted")]
+        public IActionResult GetDeletedIncidences()
+        {
+            var deletedIncidences = _incidenceService.GetDeletedIncidences();
+            return Ok(deletedIncidences);
+        }
+
         [HttpPut("{id}")]
         public IActionResult UpdateIncidence(int id, [FromBody] UpdateIncidenceDTO dto)
         {
