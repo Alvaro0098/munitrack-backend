@@ -15,5 +15,6 @@ namespace Application.Interfaces
         List<Incidence> GetDeletedIncidences();
         Incidence UpdateIncidence(int id, UpdateIncidenceDTO Dto);
         bool DeleteIncidence(int id);
+        bool RestoreIncidence(int id);
     }
 }

@@ -56,5 +56,17 @@ namespace Infrastructure.Repository
             _muniDbContext.Remove(incidence);
             _muniDbContext.SaveChanges();
         }
+
+        public bool RestoreIncidence(int id)
+        {
+            var incidence = _muniDbContext.Incidences.FirstOrDefault(i => i.Id == id);
+            if (incidence is null)
+                return false;
+            
+            incidence.Deleted = 0;
+            _muniDbContext.Update(incidence);
+            _muniDbContext.SaveChanges();
+            return true;
+        }
     }
 }

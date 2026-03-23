@@ -56,6 +56,23 @@ namespace MuniTrack_API.Contollers
             return Ok(deletedIncidences);
         }
 
+        [HttpPut("{id}/restore")]
+        public IActionResult RestoreIncidence(int id)
+        {
+            try
+            {
+                var restored = _incidenceService.RestoreIncidence(id);
+                if (restored)
+                    return Ok($"La Incidencia:{id} ha sido restaurada correctamente");
+                
+                return NotFound($"La Incidencia:{id} no fue encontrada");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPut("{id}")]
         public IActionResult UpdateIncidence(int id, [FromBody] UpdateIncidenceDTO dto)
         {

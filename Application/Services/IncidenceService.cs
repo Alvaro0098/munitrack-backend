@@ -66,5 +66,10 @@ namespace Application.Services
             _incidenceRepository.UpdateIncidence(incidenceDelete);
             return true;
         }
+
+        public bool RestoreIncidence(int id)
+        {
+            return _incidenceRepository.RestoreIncidence(id);
+        }
     }
 }

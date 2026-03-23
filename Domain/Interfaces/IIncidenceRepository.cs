@@ -15,5 +15,6 @@ namespace Domain.Interfaces
         Incidence? GetIncidenceById(int id);
         Incidence UpdateIncidence(Incidence incidence);
         void DeleteIncidence(Incidence incidence);
+        bool RestoreIncidence(int id);
     }
 }
