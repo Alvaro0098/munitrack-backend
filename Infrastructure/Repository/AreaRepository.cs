@@ -21,10 +21,7 @@ namespace Infrastructure.Repository
             _muniDbContext.SaveChanges();
         }
 
-        public List<Area> GetAreas()
-        {
-            return _muniDbContext.Areas.ToList();
-        }
+
         public Area? GetAreaById(int id)
         {
             return _muniDbContext.Areas.FirstOrDefault(g => g.Id == id);

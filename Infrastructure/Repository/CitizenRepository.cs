@@ -20,11 +20,6 @@ namespace Infrastructure.Repository
             _muniDbContext.SaveChanges();
         }
 
-        public List<Citizen> GetCitizens()
-        {
-            return _muniDbContext.Citizens.ToList();
-        }
-
         public Citizen? GetCitizenByDni(int dni)
         {
             return _muniDbContext.Citizens.FirstOrDefault(g => g.DNI == dni);

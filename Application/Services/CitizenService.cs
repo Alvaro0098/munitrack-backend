@@ -16,13 +16,20 @@ namespace Application.Services
         {
             _citizenRepository = citizenRepository;
         }
-        public List<Citizen> GetCitizen()
+
+       public List<Citizen> GetCitizen()
         {
-            return _citizenRepository.GetCitizens();
+    
+            return _citizenRepository.Get();
         }
 
         public void CreateCitizen(CreateCitizenDto dto)
         {
+            // Validar que no existe un ciudadano con el mismo DNI
+            var existingCitizen = _citizenRepository.GetCitizenByDni(dto.DNI);
+            if (existingCitizen != null)
+                throw new Exception($"Ya existe un ciudadano con DNI {dto.DNI}");
+
             var citizen = new Citizen
             {
                 Name = dto.Name,

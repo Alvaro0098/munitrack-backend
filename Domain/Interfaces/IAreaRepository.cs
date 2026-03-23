@@ -11,7 +11,6 @@ namespace Domain.Interfaces
     public interface IAreaRepository
     {
         void AddArea(Area Area);
-        List<Area> GetAreas();
         Area? GetAreaById(int id);
         Area? GetAreaByName(string name);
         Area UpdateArea(Area Area);

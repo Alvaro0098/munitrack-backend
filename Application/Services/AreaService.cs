@@ -19,7 +19,7 @@ namespace Application.Services
         }
         public List<Area> GetAreas()
         {
-            return _areaRepository.GetAreas();
+            return _areaRepository.Get();
         }
         public void CreateArea(CreateAndUpdateAreaDTO Dto)
         {
