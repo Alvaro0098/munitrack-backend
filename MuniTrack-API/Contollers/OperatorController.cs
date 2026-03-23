@@ -19,6 +19,7 @@ namespace MuniTrack_API.Contollers
 
 
         [HttpPost]
+        [Authorize(Policy = "OnlySysAdmin")]
         public IActionResult CreateOperator([FromBody] CreateOperatorDto Dto)
         {
             try

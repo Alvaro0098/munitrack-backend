@@ -157,7 +157,7 @@ app.UseHttpsRedirection();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
-app.UseCors("MuniTrackPolicy");
+// app.UseCors("MuniTrackPolicy");
 
 app.UseAuthentication(); // Primero quién sos
 app.UseAuthorization();  // Segundo qué podés hacer

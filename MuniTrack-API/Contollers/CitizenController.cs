@@ -52,6 +52,24 @@ namespace MuniTrack_API.Contollers
             return Ok(searchCitizen);
         }
 
+        [HttpPut("{dni}")]
+        public IActionResult UpdateCitizen(int dni, [FromBody] UpdateCitizenDto dto)
+        {
+            try
+            {
+                var searchCitizen = _citizenService.GetCitizenByDni(dni);
+                if (searchCitizen == null)
+                    return NotFound($"No se encontró el ciudadano con DNI {dni}");
+
+                var updateCitizen = _citizenService.UpdateCitizen(dni, dto);
+                return Ok(updateCitizen);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete]
         [Route("{dniToDelete}")]
         public IActionResult DeleteCitizen(int dniToDelete)
