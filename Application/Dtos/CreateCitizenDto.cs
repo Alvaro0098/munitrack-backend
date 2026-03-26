@@ -14,15 +14,19 @@ namespace Application.Dtos
         [Range(1000000, 99999999, ErrorMessage = "El DNI debe tener entre 7 y 8 dígitos")]
         public int DNI { get; set; }
         [Required]
+        [StringLength(100)]
         public string Name { get; set; }
         [Required]
+        [StringLength(100)]
         public string LastName { get; set; }
         [Required]
+        [StringLength(200)]
         public string Adress { get; set; }
         [Required]
-        [StringLength(10)]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "El teléfono debe tener exactamente 10 dígitos")]
         public string Phone { get; set; }
         [Required]
+        [StringLength(256)]
         public string Email { get; set; }
   
 

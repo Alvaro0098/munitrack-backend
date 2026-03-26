@@ -17,17 +17,20 @@ namespace Application.Dtos
         [Range(1000000, 99999999, ErrorMessage = "El DNI debe tener entre 7 y 8 dígitos")]
         public int DNI { get; set; }
         [Required]
+        [StringLength(100)]
         public string Name { get; set; }
         [Required]
+        [StringLength(100)]
         public string LastName { get; set; }
         [Required]
         public int NLegajo { get; set; }
         [Required]
         [MinLength(8)]
         public string Password { get; set; }
-        [StringLength(10)]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "El teléfono debe tener exactamente 10 dígitos")]
         public string Phone { get; set; }
         [Required]
+        [StringLength(256)]
         [EmailAddress(ErrorMessage = "El email no es válido")]
         public string Email { get; set; }
         [Required]
