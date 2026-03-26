@@ -17,7 +17,7 @@ namespace Infrastructure.Repository
             _muniDbContext = muniDbContext;
         }
 
-        public List<T> Get()
+        public virtual List<T> Get()
         {
             return _muniDbContext.Set<T>().ToList();
         }

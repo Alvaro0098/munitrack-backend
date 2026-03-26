@@ -15,6 +15,14 @@ namespace Infrastructure.Repository
 
         }
 
+        /// <summary>
+        /// Sobrescribe Get() para devolver solo áreas no eliminadas (soft delete)
+        /// </summary>
+        public override List<Area> Get()
+        {
+            return _muniDbContext.Areas.Where(a => a.Deleted == 0).ToList();
+        }
+
         public void AddArea(Area Area)
         {
             _muniDbContext.Areas.Add(Area);
@@ -24,12 +32,12 @@ namespace Infrastructure.Repository
 
         public Area? GetAreaById(int id)
         {
-            return _muniDbContext.Areas.FirstOrDefault(g => g.Id == id);
+            return _muniDbContext.Areas.FirstOrDefault(g => g.Id == id && g.Deleted == 0);
         }
 
         public Area? GetAreaByName(string name)
         {
-            return _muniDbContext.Areas.FirstOrDefault(g => g.Name == name);
+            return _muniDbContext.Areas.FirstOrDefault(g => g.Name == name && g.Deleted == 0);
         }
 
         public Area UpdateArea(Area Area)

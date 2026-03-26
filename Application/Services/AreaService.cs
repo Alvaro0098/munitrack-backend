@@ -13,9 +13,12 @@ namespace Application.Services
     public class AreaService : IAreaService
     {
         private readonly IAreaRepository _areaRepository;
-        public AreaService(IAreaRepository areaRepository)
+        private readonly IIncidenceRepository _incidenceRepository;
+
+        public AreaService(IAreaRepository areaRepository, IIncidenceRepository incidenceRepository)
         {
             _areaRepository = areaRepository;
+            _incidenceRepository = incidenceRepository;
         }
         public List<Area> GetAreas()
         {
@@ -45,6 +48,16 @@ namespace Application.Services
             var areaDelete = _areaRepository.GetAreaById(id);
             if (areaDelete is null)
                 return false;
+
+            // Verificar si el área tiene incidencias activas vinculadas
+            var linkedIncidences = _incidenceRepository.GetIncidencesByAreaId(id);
+            if (linkedIncidences.Any())
+            {
+                throw new InvalidOperationException(
+                    $"No se puede eliminar el área '{areaDelete.Name}' porque tiene {linkedIncidences.Count} incidencia(s) vinculada(s). " +
+                    "Primero debes eliminar o reasignar todas las incidencias de esta área."
+                );
+            }
 
             areaDelete.Deleted = 1;
             _areaRepository.UpdateArea(areaDelete);

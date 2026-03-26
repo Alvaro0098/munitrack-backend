@@ -53,11 +53,23 @@ namespace MuniTrack_API.Contollers
         [Route("{idToDelete}")]
         public IActionResult DeleteArea(int idToDelete)
         {
-            var deleteResult = _areaService.DeleteArea(idToDelete);
-            if (deleteResult)
-                return Ok();
+            try
+            {
+                var deleteResult = _areaService.DeleteArea(idToDelete);
+                if (deleteResult)
+                    return Ok();
 
-            return BadRequest($"El area con el  siguiente id:{idToDelete} no pudo ser eliminada");
+                return BadRequest($"El área con el siguiente id:{idToDelete} no pudo ser eliminada");
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Cuando el área tiene incidencias vinculadas
+                return Conflict(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
