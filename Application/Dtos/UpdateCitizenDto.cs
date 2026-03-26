@@ -19,6 +19,7 @@ namespace Application.Dtos
         [Required]
         public string Adress { get; set; }
         [Required]
+        [StringLength(10)]
         public string Phone { get; set; }
         [Required]
         public string Email { get; set; }

@@ -19,6 +19,7 @@ namespace Application.Dtos
         [Required]
         [MinLength(8)]
         public string Password { get; set; }
+        [StringLength(10)]
         public string Phone { get; set; }
         [Required]
         [EmailAddress(ErrorMessage = "El email no es válido")]
