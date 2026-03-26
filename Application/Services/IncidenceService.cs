@@ -57,8 +57,20 @@ namespace Application.Services
             if (updatedIncidence is null)
                 throw new Exception("Incidencia no encontrada");
 
+            // Validar que la fecha no sea futura
+            var today = DateTime.UtcNow.Date;
+            var incidenceDate = Dto.Date.Date;
+            if (incidenceDate > today)
+            {
+                throw new InvalidOperationException("No se permite actualizar incidencias con fechas futuras.");
+            }
+
+            // Actualizar todos los campos editables
+            updatedIncidence.Date = Dto.Date;
+            updatedIncidence.IncidenceType = Dto.IncidenceType;
             updatedIncidence.State = Dto.State;
             updatedIncidence.Description = Dto.Description;
+            updatedIncidence.AreaId = Dto.AreaId;
 
             _incidenceRepository.UpdateIncidence(updatedIncidence);
             return updatedIncidence;

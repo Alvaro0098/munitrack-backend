@@ -13,9 +13,11 @@ namespace Application.Dtos
 {
     public class UpdateIncidenceDTO
     {
+        public DateTime Date { get; set; }
+        public IncidenceType IncidenceType { get; set; }
         public string? Description { get; set; }
         public IncidenceState State { get; set; } = IncidenceState.Started;
-        
-
+        [Required]
+        public int AreaId { get; set; }
     }
 }
