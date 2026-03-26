@@ -21,6 +21,14 @@ namespace Application.Services
 
         public void CreateIncidence(CreateIncidenceDTO Dto, int operatorId)
         {
+            // Validar que la fecha no sea futura
+            var today = DateTime.UtcNow.Date;
+            var incidenceDate = Dto.Date.Date;
+            if (incidenceDate > today)
+            {
+                throw new InvalidOperationException("No se permite registrar incidencias con fechas futuras.");
+            }
+
             Incidence newIncidence = new Incidence()
             {
                 Date = Dto.Date,
