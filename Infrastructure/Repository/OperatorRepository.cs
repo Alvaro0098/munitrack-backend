@@ -31,7 +31,16 @@ namespace Infrastructure.Repository
 
         public Operator? GetOperatorByDni(int dni)
         {
+            // Buscar en TODOS los operadores (incluyendo eliminados)
+            // Porque la restricción UNIQUE en la BD se aplica globalmente
             return _muniDbContext.Operators.FirstOrDefault(g => g.DNI == dni);
+        }
+
+        public Operator? GetOperatorByNLegajo(int nLegajo)
+        {
+            // Buscar en TODOS los operadores (incluyendo eliminados)
+            // Porque la restricción UNIQUE en la BD se aplica globalmente
+            return _muniDbContext.Operators.FirstOrDefault(o => o.NLegajo == nLegajo);
         }
 
         public Operator UpdateOperator(Operator Operator)
@@ -47,7 +56,8 @@ namespace Infrastructure.Repository
         }
         public Operator? GetUserByNLegajoAndPassword(int NLegajo, string Password)
         {
-            return _muniDbContext.Operators.FirstOrDefault(p => p.NLegajo == NLegajo && p.Password == Password);
+            // Solo devolver operadores NO eliminados (soft-delete)
+            return _muniDbContext.Operators.FirstOrDefault(p => p.NLegajo == NLegajo && p.Password == Password && p.Deleted == 0);
         }
     }
 }

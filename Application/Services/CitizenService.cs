@@ -2,7 +2,6 @@
 using Application.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
-using Application.Interfaces;
 using System;
 using System.Collections.Generic;
 

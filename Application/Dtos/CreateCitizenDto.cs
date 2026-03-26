@@ -10,7 +10,7 @@ namespace Application.Dtos
 {
     public class CreateCitizenDto
     {
-
+        [Required]
         public int DNI { get; set; }
         [Required]
         public string Name { get; set; }

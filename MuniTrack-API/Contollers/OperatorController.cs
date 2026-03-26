@@ -25,11 +25,19 @@ namespace MuniTrack_API.Contollers
             try
             {
                 _operatorService.CreateOperator(Dto);
-                return Ok(Dto);
+                Console.WriteLine($"✅ Operador creado exitosamente. DNI: {Dto.DNI}, NLegajo: {Dto.NLegajo}");
+                return Ok(new { message = "Operador registrado correctamente.", data = Dto });
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Excepciones de validación - mensaje limpio al cliente (string pelado)
+                Console.WriteLine($"⚠️ Validación en CreateOperator: {ex.Message}");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                Console.WriteLine($"❌ Error en CreateOperator: {ex.GetType().Name} - {ex.Message}");
+                return BadRequest("No se pudo registrar el operador. Verifique los datos e intente nuevamente.");
             }
         }
 
@@ -55,11 +63,24 @@ namespace MuniTrack_API.Contollers
         [Route("{dniToDelete}")]
         public IActionResult DeleteOperator(int dniToDelete)
         {
-            var deleteResult = _operatorService.DeleteOperator(dniToDelete);
-            if (deleteResult)
-                return Ok();
+            try
+            {
+                var deleteResult = _operatorService.DeleteOperator(dniToDelete);
+                if (deleteResult)
+                    return Ok(new { message = "Operador eliminado correctamente." });
 
-            return BadRequest($"La persona con el  siguiente DNI:{dniToDelete} no pudo ser eliminada");
+                return BadRequest($"No se encontró el operador con DNI: {dniToDelete}");
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine($"⚠️ Validación fallida en DeleteOperator: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ Error en DeleteOperator: {ex.GetType().Name} - {ex.Message}");
+                return BadRequest("No se pudo eliminar el operador. Intente nuevamente más tarde.");
+            }
         }
 
         [HttpPut("{dni}")]
@@ -69,11 +90,19 @@ namespace MuniTrack_API.Contollers
             try
             {
                 var updatedOperator = _operatorService.UpdateOperator(dni, dto);
-                return Ok(updatedOperator);
+                return Ok(new { message = "Operador actualizado correctamente.", data = updatedOperator });
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Excepciones de validación conocidas
+                Console.WriteLine($"⚠️ Validación fallida en UpdateOperator: {ex.Message}");
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                // Excepciones inesperadas
+                Console.WriteLine($"❌ Error en UpdateOperator: {ex.GetType().Name} - {ex.Message}");
+                return BadRequest("No se pudo actualizar el operador. Verifique los datos e intente nuevamente.");
             }
         }
 
