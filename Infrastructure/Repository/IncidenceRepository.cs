@@ -40,6 +40,13 @@ namespace Infrastructure.Repository
             .ToList();
         }
 
+        public List<Incidence> GetIncidencesByAreaId(int areaId)
+        {
+            return _muniDbContext.Incidences
+                .Where(i => i.AreaId == areaId && i.Deleted == 0)
+                .ToList();
+        }
+
         public Incidence? GetIncidenceById(int id)
         {
             return _muniDbContext.Incidences.FirstOrDefault(p => p.Id == id);
