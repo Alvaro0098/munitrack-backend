@@ -16,11 +16,10 @@ namespace Application.Dtos
         [Required]
         public string LastName { get; set; }
 
-        [Required]
-        [MinLength(8)]
-        public string Password { get; set; }
+        [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
+        public string? Password { get; set; }
         [StringLength(10)]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
         [Required]
         [EmailAddress(ErrorMessage = "El email no es válido")]
         public string Email { get; set; }

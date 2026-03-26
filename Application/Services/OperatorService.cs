@@ -91,7 +91,11 @@ namespace Application.Services
             {
                 operatorEntity.Name = Dto.Name;
                 operatorEntity.LastName = Dto.LastName;
-                operatorEntity.Password = Dto.Password;
+                // Solo actualizar password si se proporciona uno (no vacío)
+                if (!string.IsNullOrWhiteSpace(Dto.Password))
+                {
+                    operatorEntity.Password = Dto.Password;
+                }
                 operatorEntity.Phone = Dto.Phone;
                 operatorEntity.Email = Dto.Email;
                 operatorEntity.Position = Dto.Position;

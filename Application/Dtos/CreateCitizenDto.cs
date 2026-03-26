@@ -11,6 +11,7 @@ namespace Application.Dtos
     public class CreateCitizenDto
     {
         [Required]
+        [Range(1000000, 99999999, ErrorMessage = "El DNI debe tener entre 7 y 8 dígitos")]
         public int DNI { get; set; }
         [Required]
         public string Name { get; set; }

@@ -11,7 +11,6 @@ namespace Application.Dtos
 {
     public class UpdateCitizenDto
     {
-        public int DNI { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
