@@ -47,6 +47,13 @@ namespace Infrastructure.Repository
                 .ToList();
         }
 
+        public List<Incidence> GetIncidencesByOperatorId(int operatorId)
+        {
+            return _muniDbContext.Incidences
+                .Where(i => i.OperatorId == operatorId && i.Deleted == 0)
+                .ToList();
+        }
+
         public Incidence? GetIncidenceById(int id)
         {
             return _muniDbContext.Incidences.FirstOrDefault(p => p.Id == id);

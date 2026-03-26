@@ -13,6 +13,7 @@ namespace Domain.Interfaces
         List<Incidence> GetAllIncidences();
         List<Incidence> GetDeletedIncidences();
         List<Incidence> GetIncidencesByAreaId(int areaId);
+        List<Incidence> GetIncidencesByOperatorId(int operatorId);
         Incidence? GetIncidenceById(int id);
         Incidence UpdateIncidence(Incidence incidence);
         void DeleteIncidence(Incidence incidence);

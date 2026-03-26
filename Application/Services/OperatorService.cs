@@ -13,10 +13,12 @@ namespace Application.Services
     public class OperatorService : IOperatorService
     {
         private readonly IOperatorRepository _operatorRepository;
+        private readonly IIncidenceRepository _incidenceRepository;
 
-        public OperatorService(IOperatorRepository operatorRepository)
+        public OperatorService(IOperatorRepository operatorRepository, IIncidenceRepository incidenceRepository)
         {
             _operatorRepository = operatorRepository;
+            _incidenceRepository = incidenceRepository;
         }
 
         public List<Operator> GetOperators()
@@ -25,15 +27,17 @@ namespace Application.Services
         }
         public void CreateOperator(CreateOperatorDto Dto)
         {
-            // Validación preventiva: Verificar duplicado de DNI
+            // Validación: Verificar duplicado de DNI EN OPERADORES ACTIVOS
+            // Permite reutilizar DNI de operadores eliminados
             var existingOperator = _operatorRepository.GetOperatorByDni(Dto.DNI);
             if (existingOperator != null)
-                throw new InvalidOperationException($"Ya existe un operador con DNI {Dto.DNI}");
+                throw new InvalidOperationException($"Ya existe un operador activo con DNI {Dto.DNI}");
 
-            // Validación preventiva: Verificar duplicado de N° de Legajo
+            // Validación: Verificar duplicado de N° de Legajo EN OPERADORES ACTIVOS
+            // Permite reutilizar NLegajo de operadores eliminados
             var existingByLegajo = _operatorRepository.GetOperatorByNLegajo(Dto.NLegajo);
             if (existingByLegajo != null)
-                throw new InvalidOperationException($"Ya existe un operador con N° de Legajo {Dto.NLegajo}");
+                throw new InvalidOperationException($"Ya existe un operador activo con N° de Legajo {Dto.NLegajo}");
 
             try
             {
@@ -62,10 +66,20 @@ namespace Application.Services
             var operatorDelete = _operatorRepository.GetOperatorByDni(dni);
             if (operatorDelete is null)
                 return false;
+
+            // Validar que no haya incidencias activas vinculadas
+            var linkedIncidences = _incidenceRepository.GetIncidencesByOperatorId(operatorDelete.NLegajo);
+            if (linkedIncidences.Count > 0)
+            {
+                throw new InvalidOperationException(
+                    $"No se puede eliminar el operador '{operatorDelete.Name} {operatorDelete.LastName}' porque tiene {linkedIncidences.Count} incidencia(s) activa(s) vinculada(s)"
+                );
+            }
             
             try
             {
-                _operatorRepository.DeleteOperator(operatorDelete);
+                operatorDelete.Deleted = 1;
+                _operatorRepository.UpdateOperator(operatorDelete);
                 return true;
             }
             catch (Exception ex)

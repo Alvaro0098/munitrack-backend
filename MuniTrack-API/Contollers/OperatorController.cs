@@ -71,6 +71,12 @@ namespace MuniTrack_API.Contollers
 
                 return BadRequest($"No se encontró el operador con DNI: {dniToDelete}");
             }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("incidencia"))
+            {
+                // Validación: Operador tiene incidencias vinculadas
+                Console.WriteLine($"⚠️ Validación fallida en DeleteOperator: {ex.Message}");
+                return Conflict(ex.Message);
+            }
             catch (InvalidOperationException ex)
             {
                 Console.WriteLine($"⚠️ Validación fallida en DeleteOperator: {ex.Message}");

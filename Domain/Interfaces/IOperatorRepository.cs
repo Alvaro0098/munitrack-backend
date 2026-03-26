@@ -11,7 +11,9 @@ namespace Domain.Interfaces
     {
         void AddOperator(Operator Operator);
         Operator? GetOperatorByDni(int NLegajo);
+        Operator? GetOperatorByDniIncludingDeleted(int dni);
         Operator? GetOperatorByNLegajo(int nLegajo);
+        Operator? GetOperatorByNLegajoIncludingDeleted(int nLegajo);
         Operator UpdateOperator(Operator Operator);
         void DeleteOperator(Operator Operator);
         Operator? GetUserByNLegajoAndPassword(int NLegajo, string Password);

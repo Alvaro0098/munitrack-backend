@@ -12,10 +12,16 @@ namespace Infrastructure.Repository
 {
     public class OperatorRepository : BaseRepository<Operator>, IOperatorRepository
     {
-     
         public OperatorRepository(MuniDbContext _context) : base(_context)
         {
+        }
 
+        /// <summary>
+        /// Sobrescribe Get() para devolver solo operadores no eliminados (soft delete)
+        /// </summary>
+        public override List<Operator> Get()
+        {
+            return _muniDbContext.Operators.Where(o => o.Deleted == 0).ToList();
         }
 
         public void AddOperator(Operator Operator)
@@ -31,15 +37,31 @@ namespace Infrastructure.Repository
 
         public Operator? GetOperatorByDni(int dni)
         {
+            // Buscar solo operadores ACTIVOS (Deleted == 0)
+            // Permite reutilizar DNIs de operadores que fueron borrados
+            return _muniDbContext.Operators.FirstOrDefault(g => g.DNI == dni && g.Deleted == 0);
+        }
+
+        public Operator? GetOperatorByDniIncludingDeleted(int dni)
+        {
             // Buscar en TODOS los operadores (incluyendo eliminados)
-            // Porque la restricción UNIQUE en la BD se aplica globalmente
+            // Usado solo para validación de duplicado en CreateOperator
+            // Evita que alguien cree operador con DNI que alguna vez existió
             return _muniDbContext.Operators.FirstOrDefault(g => g.DNI == dni);
         }
 
         public Operator? GetOperatorByNLegajo(int nLegajo)
         {
+            // Buscar solo operadores ACTIVOS (Deleted == 0)
+            // Permite reutilizar NLegajo de operadores que fueron borrados
+            return _muniDbContext.Operators.FirstOrDefault(o => o.NLegajo == nLegajo && o.Deleted == 0);
+        }
+
+        public Operator? GetOperatorByNLegajoIncludingDeleted(int nLegajo)
+        {
             // Buscar en TODOS los operadores (incluyendo eliminados)
-            // Porque la restricción UNIQUE en la BD se aplica globalmente
+            // Usado solo para validación de duplicado en CreateOperator
+            // Evita que alguien cree operador con NLegajo que alguna vez existió
             return _muniDbContext.Operators.FirstOrDefault(o => o.NLegajo == nLegajo);
         }
 
