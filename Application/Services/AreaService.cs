@@ -49,16 +49,6 @@ namespace Application.Services
             if (areaDelete is null)
                 return false;
 
-            // Verificar si el área tiene incidencias activas vinculadas
-            var linkedIncidences = _incidenceRepository.GetIncidencesByAreaId(id);
-            if (linkedIncidences.Any())
-            {
-                throw new InvalidOperationException(
-                    $"No se puede eliminar el área '{areaDelete.Name}' porque tiene {linkedIncidences.Count} incidencia(s) vinculada(s). " +
-                    "Primero debes eliminar o reasignar todas las incidencias de esta área."
-                );
-            }
-
             areaDelete.Deleted = 1;
             _areaRepository.UpdateArea(areaDelete);
             return true;
