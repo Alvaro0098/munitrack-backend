@@ -8,7 +8,7 @@ using Domain.Entities;
 
 namespace Domain.Interfaces
 {
-    public interface IAreaRepository
+    public interface IAreaRepository : IBaseRepository<Area>
     {
         void AddArea(Area Area);
         Area? GetAreaById(int id);
